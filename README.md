@@ -9,7 +9,7 @@ Add new attendees to Live Events on the Bevy platform through automation!
 
 The `.env` file needs 5 points of data to function properly
 
-Open `chrome://versions` on a new Chrome tab and find the appropriate `USER_DATA_DIR` and `PROFILE_DIRECTORY` data at the `Profile Path` section
+Open `chrome://version` on a new Chrome tab and find the appropriate `USER_DATA_DIR` and `PROFILE_DIRECTORY` data at the `Profile Path` section
 
 ![chrome://version example](chrome_version.png)
 
