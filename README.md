@@ -18,9 +18,9 @@ Open `chrome://version` on a new Chrome tab and find the appropriate `USER_DATA_
    2. For Mac, it defaults to `/Users/<USERNAME>/Library/Application Support/Google/Chrome`
    3. For Linux, it defaults to `/home/<USERNAME>/.config/google-chrome`
 2. `PROFILE_DIRECTORY`: The name of the profile directory in the user data directory. This user should be logged into the Google Account that has access to your Bevy dashboard **AND** is already logged into the Bevy platform. In the case of the example picture, it is `Profile 3`
-3. URL: The URL of the event page
-4. EVENT_NAME: The exact name of the event
-5. CSV_FILE: The path to the CSV file containing the attendee data. Columns should be formatted to `First Name`, `Last Name`, and `Email`
+3. `URL`: The URL of the specific Bevy event platform
+4. `EVENT_NAME`: The exact name of the event
+5. `CSV_FILE`: The path to the CSV file containing the attendee data. Columns should be formatted to `First Name`, `Last Name`, and `Email`
 
 ## Configuration
 
@@ -33,7 +33,7 @@ git clone https://github.com/digaji/csv-to-bevy.git
 2. CD into the project
 
 ```bash
-cs csv-to-bevy
+cd csv-to-bevy
 ```
 
 3. Create virtual environment (Python version for this project == 3.10.11)
@@ -60,7 +60,7 @@ pip install -r requirements.txt
 
 6. Add your attendee CSV data
 
-7. Rename the `.env.template` file to `.env` and fill it with the appropriate data
+7. Copy the `.env.template` file to `.env` and fill it with the appropriate data
 
 ```bash
 cp .env.template .env
