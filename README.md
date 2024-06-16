@@ -18,7 +18,7 @@ Open `chrome://version` on a new Chrome tab and find the appropriate `USER_DATA_
    2. For Mac, it defaults to `/Users/<USERNAME>/Library/Application Support/Google/Chrome`
    3. For Linux, it defaults to `/home/<USERNAME>/.config/google-chrome`
 2. `PROFILE_DIRECTORY`: The name of the profile directory in the user data directory. This user should be logged into the Google Account that has access to your Bevy dashboard **AND** is already logged into the Bevy platform. In the case of the example picture, it is `Profile 3`
-3. `URL`: The URL of the specific Bevy event platform
+3. `URL`: The URL of the specific Bevy event platform (e.g. `https://gdg.community.dev`)
 4. `EVENT_NAME`: The exact name of the event
 5. `CSV_FILE`: The path to the CSV file containing the attendee data. Columns should be formatted to `First Name`, `Last Name`, and `Email`
 
