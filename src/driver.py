@@ -45,7 +45,7 @@ class Driver:
         if isDelay:
             time.sleep(1)
 
-    def wait_to_load(self, by: By, value: str, timeout=10, click=True) -> None:
+    def wait_to_load(self, by: By, value: str, timeout=5, click=True) -> None:
         print(f"Waiting to load: {value}" + ("\n" if not click else ""))
 
         try:
@@ -63,7 +63,7 @@ class Driver:
         else:
             pass
 
-    def add_attendee(self, firstName: str, lastName: str, email: str) -> None:
+    def add_attendee(self, firstName: str, lastName: str, email: str) -> bool:
         print(f"Adding attendee: {firstName} {lastName}\t{email}\n")
 
         identifiers = {
@@ -72,20 +72,30 @@ class Driver:
             "email": "s2v3vd",
         }
 
-        # First name
         self.add_input(
             by=By.ID, value=identifiers.get("firstName"), text=firstName, isDelay=False
         )
 
-        # Last name
         self.add_input(
             by=By.ID, value=identifiers.get("lastName"), text=lastName, isDelay=False
         )
 
-        # Email
         self.add_input(
             by=By.ID, value=identifiers.get("email"), text=email, isDelay=False
         )
 
-        # TODO Click Add button
-        # TODO Handle possible Error pop up
+        self.click_button(by=By.CSS_SELECTOR, value="[aria-label='Save and add more']")
+
+        try:
+            WebDriverWait(self.driver, 5).until(
+                EC.presence_of_element_located(
+                    (By.XPATH, f"//*[contains(text(), 'Attendee added')]")
+                )
+            )
+
+            print("Attendee successfully added!\n")
+            time.sleep(1)
+            return True
+        except (NoSuchElementException, TimeoutException):
+            print("!!Error on attendee: {firstName} {lastName}\t{email}\n")
+            return False

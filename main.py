@@ -14,14 +14,15 @@ def main():
     profile_dir = os.getenv("PROFILE_DIRECTORY")
     url = os.getenv("URL")
     event_name = os.getenv("EVENT_NAME")
-
     data = parse_csv(os.getenv("CSV_FILE"))
+
+    count = 0
 
     driver = Driver(user_data_dir, profile_dir)
     driver.open_page(url)
 
     # Handle possible Not logged in
-    driver.wait_to_load(by=By.LINK_TEXT, value="Log in", timeout=3, click=True)
+    driver.wait_to_load(by=By.LINK_TEXT, value="Log in", timeout=1, click=True)
 
     # Go to Community Page Dashboard
     driver.click_button(by=By.LINK_TEXT, value="Dashboard")
@@ -29,7 +30,7 @@ def main():
     # TODO Handle possible Warning pop up
 
     # Handle possible Feedback pop up
-    driver.wait_to_load(by=By.LINK_TEXT, value="Show me later", timeout=3, click=True)
+    driver.wait_to_load(by=By.LINK_TEXT, value="Show me later", timeout=1, click=True)
 
     driver.wait_to_load(
         by=By.XPATH,
@@ -44,11 +45,16 @@ def main():
     for idx in data.index:
         row = data.loc[idx]
 
-        driver.add_attendee(
+        result = driver.add_attendee(
             firstName=row["First Name"],
             lastName=row["Last Name"],
             email=row["Email"],
         )
+
+        count += 1 if result else None
+
+    driver.click_button(by=By.CSS_SELECTOR, value="[aria-label='Cancel']")
+    print(f"Finished adding attendence of {count} attendees!")
 
 
 if __name__ == "__main__":
