@@ -2,6 +2,12 @@
 
 Add new attendees to Live Events on the Bevy platform through automation!
 
+## What this script does
+
+1. Opens Google Chrome through the [undetected_chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver)
+2. Navigate through the Bevy event platform Organizer Dashboard and goes to your specific live event
+3. Adds attendees recursively from the CSV data provided
+
 > [!NOTE]
 > Changes to the Bevy platform may break this script. If this happens, please open a new Issue
 
@@ -74,6 +80,8 @@ cp .env.template .env
 ```bash
 python main.py
 ```
+
+10. Go AFK for ~10 minutes
 
 > [!IMPORTANT]
 > Stop any running instances of Google Chrome before running this script. Otherwise, the driver will not be able to run
