@@ -66,6 +66,11 @@ pip install -r requirements.txt
 
 6. Add your attendee CSV data
 
+```bash
+touch data.csv
+# And then fill with your attendee data
+```
+
 7. Copy the `.env.template` file to `.env` and fill it with the appropriate data
 
 ```bash
@@ -74,7 +79,6 @@ cp .env.template .env
 ```
 
 8. Stop any running instances of Google Chrome
-
 9. Run the `main.py` file
 
 ```bash
@@ -82,6 +86,7 @@ python main.py
 ```
 
 10. Go AFK for ~10 minutes
+11. See the results in `results.csv`
 
 > [!IMPORTANT]
 > Stop any running instances of Google Chrome before running this script. Otherwise, the driver will not be able to run
