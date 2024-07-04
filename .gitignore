@@ -136,3 +136,4 @@ dmypy.json
 
 # Default data file
 data.csv
+results.csv

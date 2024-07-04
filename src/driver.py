@@ -3,6 +3,7 @@ import time
 import undetected_chromedriver as uc
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -32,6 +33,10 @@ class Driver:
     def add_input(self, by: By, value: str, text: str, isDelay=True) -> None:
         print(f"Adding input: {text}\n")
         field = self.driver.find_element(by=by, value=value)
+
+        # Clear input field
+        field.send_keys([Keys.BACKSPACE] * 1000)
+
         field.send_keys(text)
 
         if isDelay:
@@ -70,6 +75,7 @@ class Driver:
             "firstName": "s1vcua",
             "lastName": "s1yx3r",
             "email": "s2v3vd",
+            "checked": "jss12",
         }
 
         self.add_input(
@@ -84,10 +90,20 @@ class Driver:
             by=By.ID, value=identifiers.get("email"), text=email, isDelay=False
         )
 
+        # Check Send Event Email button
+        send_event = self.driver.find_element(
+            By.XPATH,
+            value='//*[@id="overlay-container"]/div/div/div[2]/form/div/div[4]/div[2]/div/label/span[1]',
+        )
+        send_event_class = send_event.get_attribute("class")
+
+        if identifiers.get("checked") not in send_event_class.split():
+            send_event.click()
+
         self.click_button(by=By.CSS_SELECTOR, value="[aria-label='Save and add more']")
 
         try:
-            WebDriverWait(self.driver, 5).until(
+            WebDriverWait(self.driver, 3).until(
                 EC.presence_of_element_located(
                     (By.XPATH, f"//*[contains(text(), 'Attendee added')]")
                 )
@@ -97,5 +113,8 @@ class Driver:
             time.sleep(1)
             return True
         except (NoSuchElementException, TimeoutException):
-            print("!!Error on attendee: {firstName} {lastName}\t{email}\n")
+            RED = "\033[91m"
+            RESET = "\033[0m"
+
+            print(RED + f"Error on attendee: {firstName} {lastName}\t{email}\n" + RESET)
             return False
