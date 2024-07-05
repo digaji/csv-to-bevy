@@ -31,7 +31,7 @@ def main():
     # TODO Handle possible Warning pop up
 
     # Handle possible Feedback pop up
-    driver.wait_to_load(by=By.LINK_TEXT, value="Show me later", timeout=1, click=True)
+    driver.wait_to_load(by=By.LINK_TEXT, value="Show me later", timeout=3, click=True)
 
     driver.wait_to_load(
         by=By.XPATH,

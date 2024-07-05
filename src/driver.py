@@ -103,7 +103,7 @@ class Driver:
         self.click_button(by=By.CSS_SELECTOR, value="[aria-label='Save and add more']")
 
         try:
-            WebDriverWait(self.driver, 3).until(
+            WebDriverWait(self.driver, 5).until(
                 EC.presence_of_element_located(
                     (By.XPATH, f"//*[contains(text(), 'Attendee added')]")
                 )
