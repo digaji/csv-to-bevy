@@ -68,6 +68,54 @@ class Driver:
         else:
             pass
 
+    def search_and_checkin(self, email:str):
+        print(f"Searching and checking in: {email}\n")
+        self.add_input(
+            by = By.XPATH,
+            value = "/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/input[1]",
+            text = email,
+            isDelay = True
+        )
+
+        value = "input[aria-label='check in attendee']"
+        self.wait_to_load(
+            by = By.CSS_SELECTOR,
+            value = value,
+            timeout = 5,
+            click = False
+        )
+
+        time.sleep(5)
+
+        try :
+            checklist = self.driver.find_element(
+                by=By.CSS_SELECTOR,
+                value="/html[1]/body[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[6]/div[1]/span[1]/span[1]"
+            )
+        except Exception as e:
+            print("Error")
+            print(e)
+            return False
+
+        if "jss12" in checklist.get_attribute("class").split():
+            print(f"Attendee already checked in: {email}\n")
+            return True
+
+        try:
+            self.click_button(
+                by = By.CSS_SELECTOR,
+                value = value,
+                isDelay = True
+            )
+        except Exception as e:
+
+            print(f"Attendee not found: {email}\n")
+            print(e)
+            return False
+
+        print(f"Attendee checked in: {email}\n")
+        return True
+
     def add_attendee(self, firstName: str, lastName: str, email: str) -> bool:
         print(f"Adding attendee: {firstName} {lastName}\t{email}\n")
 
@@ -91,14 +139,18 @@ class Driver:
         )
 
         # Check Send Event Email button
+        # value='//*[@id="overlay-container"]/div/div/div[2]/form/div/div[4]/div[2]/div/label/span[1]'
+        value = '//div[2]//div[1]//label[1]//span[1]//span[1]//input[1]'
         send_event = self.driver.find_element(
             By.XPATH,
-            value='//*[@id="overlay-container"]/div/div/div[2]/form/div/div[4]/div[2]/div/label/span[1]',
+            value,
         )
-        send_event_class = send_event.get_attribute("class")
 
-        if identifiers.get("checked") not in send_event_class.split():
+        if not send_event.is_selected():
+            print("Sent Event Email is not checked")
             send_event.click()
+
+        print("Sent Event Email is checked")
 
         self.click_button(by=By.CSS_SELECTOR, value="[aria-label='Save and add more']")
 
