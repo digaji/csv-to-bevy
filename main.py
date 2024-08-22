@@ -1,3 +1,4 @@
+
 from os import getenv
 
 from dotenv import load_dotenv
@@ -22,16 +23,16 @@ def main():
     driver = Driver(user_data_dir, profile_dir)
     driver.open_page(url)
 
-    # # Handle possible Not logged in
-    # driver.wait_to_load(by=By.LINK_TEXT, value="Log in", timeout=1, click=True)
+    # Handle possible Not logged in
+    driver.wait_to_load(by=By.LINK_TEXT, value="Log in", timeout=1, click=True)
 
-    # # Go to Community Page Dashboard
-    # driver.click_button(by=By.LINK_TEXT, value="Dashboard")
+    # Go to Community Page Dashboard
+    driver.click_button(by=By.LINK_TEXT, value="Dashboard")
 
-    # # TODO Handle possible Warning pop up
+    # TODO Handle possible Warning pop up
 
-    # # Handle possible Feedback pop up
-    # driver.wait_to_load(by=By.LINK_TEXT, value="Show me later", timeout=3, click=True)
+    # Handle possible Feedback pop up
+    driver.wait_to_load(by=By.LINK_TEXT, value="Show me later", timeout=3, click=True)
 
     driver.wait_to_load(
         by=By.XPATH,
@@ -40,36 +41,35 @@ def main():
     )
 
     driver.wait_to_load(
-        by=By.CSS_SELECTOR, value="[aria-label='Add attendee']", click=True,
+        by=By.CSS_SELECTOR, value="[aria-label='Add attendee']", click=True
     )
 
-    # Save old data
-    data.to_csv("old-data.csv", index=False)
-
     for idx in data.index:
-        print(f"Injecting data of attendee {idx}... {len(data)}\n")
         row = data.loc[idx]
-        firstName, lastName, email, isInjected = row["First Name"], row["Last Name"], row["Email"], row["Inject Status"]
+        firstName, lastName, email = row["First Name"], row["Last Name"], row["Email"]
 
-        if isInjected == "Success":
-            continue
-        try :
-            result = driver.add_attendee(firstName, lastName, email)
-        except Exception as e:
-            print(f"Error: {e}")
-            result = False
+        result = driver.add_attendee(
+            firstName=firstName,
+            lastName=lastName,
+            email=email,
+        )
 
-        data.at[idx, "Inject Status"] = "Success" if result else "Failed"
+        attendees.append(
+            {
+                "First Name": firstName,
+                "Last Name": lastName,
+                "Email": email,
+                "Success": result,
+            }
+        )
 
-    data.to_csv("data.csv", index=False)
+        count += 1 if result else 0
 
-    # Count Inject Status Done
-    count = data['Inject Status'].value_counts()
-    done = count.get("Success", 0)
-    failed = count.get("Failed", 0)
+    driver.click_button(by=By.CSS_SELECTOR, value="[aria-label='Cancel']")
 
+    save_csv(attendees, "results.csv")
     print(
-        f"Finished adding attendence of {len(data)} with {done} successfully data and {failed} failed data attendees! See full data in data.csv"
+        f"Finished adding attendence of {count} attendees! See full data in results.csv"
     )
 
 
