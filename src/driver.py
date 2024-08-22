@@ -140,7 +140,7 @@ class Driver:
 
         # Check Send Event Email button
         # value='//*[@id="overlay-container"]/div/div/div[2]/form/div/div[4]/div[2]/div/label/span[1]'
-        value='//div[2]//div[1]//label[1]//span[1]//span[1]//input[1]'
+        value = '//div[2]//div[1]//label[1]//span[1]//span[1]//input[1]'
         send_event = self.driver.find_element(
             By.XPATH,
             value,
