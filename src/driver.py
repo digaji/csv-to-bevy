@@ -140,9 +140,10 @@ class Driver:
 
         # Check Send Event Email button
         # value='//*[@id="overlay-container"]/div/div/div[2]/form/div/div[4]/div[2]/div/label/span[1]'
-        value='//div[2]//div[1]//label[1]//span[1]//span[1]//input[1]'
+        # value='//div[2]//div[1]//label[1]//span[1]//span[1]//input[1]'
+        value="span[class='MuiButtonBase-root MuiIconButton-root jss11 MuiCheckbox-root MuiCheckbox-colorPrimary Checkbox-styles__checkbox_1x4jm jss12 Mui-checked MuiIconButton-colorPrimary'] input[type='checkbox']"
         send_event = self.driver.find_element(
-            By.XPATH,
+            By.CSS_SELECTOR,
             value,
         )
 

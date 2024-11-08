@@ -51,7 +51,8 @@ def main():
         row = data.loc[idx]
         firstName, lastName, email, isInjected = row["First Name"], row["Last Name"], row["Email"], row["Inject Status"]
 
-        if isInjected == "Success":
+        if isInjected == "Injected":
+            print(f"Data of attendee {email} already injected\n")
             continue
         try :
             result = driver.add_attendee(firstName, lastName, email)
