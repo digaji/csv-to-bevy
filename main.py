@@ -40,7 +40,9 @@ def main():
     )
 
     driver.wait_to_load(
-        by=By.CSS_SELECTOR, value="[aria-label='Add attendee']", click=True,
+        by=By.CSS_SELECTOR,
+        value="[aria-label='Add attendee']",
+        click=True,
     )
 
     # Save old data
@@ -49,28 +51,35 @@ def main():
     for idx in data.index:
         print(f"Injecting data of attendee {idx}... {len(data)}\n")
         row = data.loc[idx]
-        firstName, lastName, email, isInjected = row["First Name"], row["Last Name"], row["Email"], row["Inject Status"]
+        firstName, lastName, email, isInjected, attendanceStatus = (
+            row["First Name"],
+            row["Last Name"],
+            row["Email Address"],
+            row["Inject Status"],
+            row["Attendance"] if "Attendance" in row else None,
+        )
 
         if isInjected == "Injected":
             print(f"Data of attendee {email} already injected\n")
             continue
-        try :
+        try:
+            # result = driver.add_check_in(firstName, lastName, email, attendanceStatus)
             result = driver.add_attendee(firstName, lastName, email)
         except Exception as e:
             print(f"Error: {e}")
             result = False
 
-        data.at[idx, "Inject Status"] = "Success" if result else "Failed"
+        data.at[idx, "Inject Status"] = "Injected" if result else "Failed"
 
-    data.to_csv("data.csv", index=False)
+    data.to_csv(getenv("CSV_FILE"), index=False)
 
     # Count Inject Status Done
-    count = data['Inject Status'].value_counts()
-    done = count.get("Success", 0)
+    count = data["Inject Status"].value_counts()
+    done = count.get("Injected", 0)
     failed = count.get("Failed", 0)
 
     print(
-        f"Finished adding attendence of {len(data)} with {done} successfully data and {failed} failed data attendees! See full data in data.csv"
+        f"Finished adding attendence of {len(data)} with {done} successfully data and {failed} failed data attendees! See full data in {getenv('CSV_FILE')}.csv"
     )
 
 
